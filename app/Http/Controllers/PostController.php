@@ -20,11 +20,21 @@ class PostController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Проверка на тип и размер изображения
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('images', 'public'); // Сохранение изображения в папке storage/app/public/images
+            $validatedData['image'] = $imagePath;
+        }
+
         Post::create($validatedData);
+
         return redirect('/posts')->with('success', 'Post created');
     }
+
     public function destroy($id)
     {
         $post = Post::findOrFail($id);

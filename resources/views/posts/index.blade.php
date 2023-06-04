@@ -15,13 +15,17 @@
             display: inline;
             margin-left: 10px;
         }
+        .post-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1 class="mt-4">Blog</h1>
 
-    <a href="/posts/create" class="btn btn-primary my-3">Create New Post</a>
 
     <div class="row">
         <div class="col-md-8">
@@ -36,6 +40,9 @@
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>
+                        @if ($post->image)
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="post-image">
+                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -53,7 +60,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="/posts">
+            <form method="POST" action="/posts" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="title" class="form-label">Title:</label>
@@ -64,8 +71,10 @@
                     <textarea id="content" name="content" class="form-control" required></textarea>
                 </div>
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <label for="image" class="form-label">Image:</label>
+                    <input type="file" id="image" name="image" class="form-control">
                 </div>
+                <button type="submit" class="btn btn-primary">Create</button>
             </form>
         </div>
     </div>
