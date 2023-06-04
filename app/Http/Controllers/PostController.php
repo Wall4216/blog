@@ -24,16 +24,20 @@ class PostController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Проверка на тип и размер изображения
         ]);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imagePath = $image->store('images', 'public'); // Сохранение изображения в папке storage/app/public/images
-            $validatedData['image'] = $imagePath;
+        if (auth()->check() && auth()->user()->is_admin) {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('images', 'public'); // Сохранение изображения в папке storage/app/public/images
+                $validatedData['image'] = $imagePath;
+            }
+
+            Post::create($validatedData);
+            return redirect('/posts')->with('success', 'Post created');
         }
 
-        Post::create($validatedData);
-
-        return redirect('/posts')->with('success', 'Post created');
+        return redirect('/posts')->with('error', 'You are not authorized to create a post.');
     }
+
 
     public function destroy($id)
     {

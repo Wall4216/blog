@@ -34,11 +34,15 @@
                     <li class="list-group-item post">
                         <div class="d-flex justify-content-between">
                             <h5>{{ $post->title }}</h5>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="delete-form">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            @auth
+                                @if (auth()->user()->is_admin)
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                @endif
+                            @endauth
                         </div>
                         @if ($post->image)
                             <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="post-image">
@@ -60,22 +64,26 @@
                 </div>
             @endif
 
-            <form method="POST" action="/posts" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title:</label>
-                    <input type="text" id="title" name="title" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="content" class="form-label">Content:</label>
-                    <textarea id="content" name="content" class="form-control" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image:</label>
-                    <input type="file" id="image" name="image" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Create</button>
-            </form>
+            @auth
+                @if (auth()->user()->is_admin)
+                    <form method="POST" action="/posts" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <input type="text" id="title" name="title" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content:</label>
+                            <textarea id="content" name="content" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image:</label>
+                            <input type="file" id="image" name="image" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                @endif
+            @endauth
         </div>
     </div>
 </div>
