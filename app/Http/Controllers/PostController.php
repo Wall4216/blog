@@ -25,4 +25,11 @@ class PostController extends Controller
         Post::create($validatedData);
         return redirect('/posts')->with('success', 'Post created');
     }
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Пост успешно удален');
+    }
 }

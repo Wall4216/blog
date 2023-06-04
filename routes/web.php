@@ -12,6 +12,7 @@ use App\Http\Controllers\PostController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/posts', [PostController::class, 'index'])->name('post');
-Route::get('posts/create', [PostController::class, 'create'])->name('create');
-Route::post('posts', [PostController::class, 'store'])->name('store')->name('store');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('posts', [PostController::class, 'store'])->name('store')->name('posts.store');
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
