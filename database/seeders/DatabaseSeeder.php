@@ -1,22 +1,32 @@
 <?php
 
-namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Role;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Создание обычного пользователя
+        \App\Models\User::create([
+            'name' => 'Обычный пользователь',
+            'email' => 'user@example.com',
+            'password' => bcrypt('password'),
+            'is_admin' => false, // Здесь указывается false для обычного пользователя
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Создание администратора
+        \App\Models\User::create([
+            'name' => 'Администратор',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('password'),
+            'is_admin' => true, // Здесь указывается true для администратора
+        ]);
     }
 }
