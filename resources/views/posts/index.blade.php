@@ -7,9 +7,10 @@
         .post {
             margin-bottom: 10px;
             padding: 10px;
-            background-color: #f8f9fa;
+            background-color: rgb(31, 41, 55);
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #ffffff;
         }
         .delete-form {
             display: inline;
@@ -20,11 +21,73 @@
             max-height: 200px;
             margin-bottom: 10px;
         }
+        /* Laravel Breeze styles */
+        .navbar-light {
+            background-color: rgb(31, 41, 55) !important;
+            width: 100%;
+        }
+        .navbar-light .navbar-brand {
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+        }
+        .navbar-light .navbar-brand:hover,
+        .navbar-light .navbar-brand:focus {
+            color: #ffffff;
+        }
+        .navbar-light .navbar-nav .nav-link {
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+        }
+        .navbar-light .navbar-nav .nav-link:hover,
+        .navbar-light .navbar-nav .nav-link:focus {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .bg-dark {
+            background-color: #1a202c;
+        }
+        .text-white {
+            color: #ffffff !important;
+        }
+        body {
+            background-color: rgb(17, 24, 39);
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-4">Blog</h1>
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+            <a class="navbar-brand text-white" href="{{ route('dashboard') }}">Blog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    @guest
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('register') }}">Register</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('posts.create') }}">Create Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="nav-link d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-link">Logout</button>
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="row justify-content-center text-center">
         <div class="col-md-8">
@@ -55,6 +118,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
