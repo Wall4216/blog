@@ -11,14 +11,22 @@
                 </div>
 
                 <!-- Navigation Links -->
+                <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
-                        {{ __('Create Post') }}
+                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
+                        {{ __('Show Post') }}
                     </x-nav-link>
+
+                    @if(Auth::user()->is_admin)
+                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
+                            {{ __('Create Post') }}
+                        </x-nav-link>
+                    @endif
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->

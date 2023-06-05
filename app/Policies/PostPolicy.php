@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class PostPolicy
 {
@@ -16,8 +15,9 @@ class PostPolicy
         return $user->is_admin;
     }
 
-    public function delete(User $user, Post $post)
+
+    public function update(User $user, Post $post)
     {
-        return $user->is_admin;
+        return true;
     }
 }

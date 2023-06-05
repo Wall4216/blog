@@ -33,15 +33,21 @@
                     <li class="list-group-item post">
                         <div class="d-flex justify-content-between">
                             <h5>{{ $post->title }}</h5>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="delete-form">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <div>
+                                @if (auth()->check() && auth()->user()->is_admin)
+                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit</a>
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                @endif
+                            </div>
                         </div>
                         @if ($post->image)
                             <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="post-image">
                         @endif
+                        <p>{{ $post->description }}</p>
                     </li>
                 @endforeach
             </ul>
