@@ -6,7 +6,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+Route::get('/projects', function () {
+    return view('about');
+})->name('projects');
+Route::get('/contact', function () {
+    return view('about');
+})->name('contact');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -28,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::get('/portfolio', function () {
+    return view('portfolio.index');
 });
 
 require __DIR__.'/auth.php';
