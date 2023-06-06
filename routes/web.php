@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\CommentController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -44,6 +45,9 @@ Route::post('/portfolio', [ProjectController::class, 'store'])->name('portfolio.
 Route::get('/portfolio/{id}/edit', [ProjectController::class, 'edit'])->name('portfolio.edit');
 Route::patch('/portfolio/{id}', [ProjectController::class, 'update'])->name('portfolio.update');
 Route::delete('/portfolio/{id}', [ProjectController::class, 'destroy'])->name('portfolio.destroy');
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 require __DIR__.'/auth.php';
 
