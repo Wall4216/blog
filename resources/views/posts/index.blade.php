@@ -60,7 +60,7 @@
 <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container">
-            <a class="navbar-brand text-white" href="{{ route('dashboard') }}">Blog</a>
+            <a class="navbar-brand text-white" href="{{ route('dashboard') }}" style="color: rgb(229, 231, 235); display: inline-flex; align-items: center; padding-left: 1px; padding-top: 1px; border-bottom: 2px solid #6366F1; border-color: #6366F1; border-bottom-width: 2px; border-bottom-color: #6366F1; text-size: small; font-weight: 500; line-height: 1.25; color: #374151; outline: none; transition: border-color 0.15s ease-in-out;">Blog</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -82,7 +82,9 @@
     </nav>
 
     <div class="row justify-content-center text-center">
+
         <div class="col-md-8">
+            <h1 class="text-left" style="color: #f9fafb;">Posts</h1>
             <ul class="list-group">
                 @foreach ($posts as $post)
                     <li class="list-group-item post">

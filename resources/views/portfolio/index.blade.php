@@ -58,44 +58,54 @@
     body {
         background-color: rgb(17, 24, 39);
     }
+    .hand {
+        color: rgb(229, 231, 235);
+        display: inline-flex;
+        align-items: center;
+        padding-left: 1px;
+        padding-top: 1px;
+        border-bottom: 2px solid #6366F1;
+        border-color: #6366F1;
+        border-bottom-width: 2px;
+        border-bottom-color: #6366F1;
+        text-size: small;
+        font-weight: 500;
+        line-height: 1.25;
+        color: #374151;
+        outline: none;
+        transition: border-color 0.15s ease-in-out;
+    }
 </style>
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('home') }}">Portfolio</a>
+        <a class="navbar-brand hand" href="{{ route('dashboard') }}">Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('about') }}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('projects') }}">Projects</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container">
+<div class="container" style="margin-top: 20px">
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <h1>Welcome to My Portfolio</h1>
-            <p>This is a showcase of my work and projects.</p>
-            <p>Feel free to explore and get in touch.</p>
+            <h1 style="color: #f9fafb">Portfolio</h1>
+            @foreach($projects as $project)
+                <div class="post">
+                    <h3>{{ $project->title }}</h3>
+                    <p>{{ $project->description }}</p>
+                    <img class="post-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
 
-<script  src="{{ asset('js/app.js') }}" type="module"></script>
+<script src="{{ asset('js/app.js') }}" type="module"></script>
 </body>
 </html>
