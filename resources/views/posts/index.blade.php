@@ -74,15 +74,7 @@
                             <a class="nav-link text-white" href="{{ route('register') }}">Register</a>
                         </li>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('posts.create') }}">Create Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" class="nav-link d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-link">Logout</button>
-                            </form>
-                        </li>
+
                     @endguest
                 </ul>
             </div>

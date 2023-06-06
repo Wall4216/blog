@@ -19,6 +19,9 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Show Post') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('portfolio.index')" :active="request()->routeIs('portfolio.index')">
+                        {{ __('Show Portfolio') }}
+                    </x-nav-link>
 
                     @if(Auth::user()->is_admin)
                         <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">

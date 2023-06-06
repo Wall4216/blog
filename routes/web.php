@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/portfolio', function () {
     return view('portfolio.index');
-});
+})->name('portfolio.index');
 
 require __DIR__.'/auth.php';
 
