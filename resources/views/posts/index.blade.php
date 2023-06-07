@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xyz" crossorigin="anonymous" />
@@ -133,22 +135,26 @@
         color: #ffd700; /* Измените цвет на желтый или желаемый */
     }
     .star-icon {
-        font-size: 20px;
-        color: transparent;
-        border: 1px solid #ffffff;
-        transition: transform 0.2s, color 0.2s, border-color 0.2s;
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        transform: scale(2);
     }
 
-    .star-icon:hover {
+    .star-icon::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: transparent;
+    }
+
+    .star-icon:hover::before {
         color: #ffd700;
-        border-color: #ffffff;
         cursor: pointer;
     }
 
-    .star-icon:active {
-        color: #ffd700;
-        transform: scale(10);
-    }
 </style>
 
 <body>
@@ -178,7 +184,6 @@
                     <!-- Звездочка для добавления лайка -->
                     <button class="like-button {{ $post->likedByUser(auth()->user()->id) ? 'active' : '' }}" data-post-id="{{ $post->id }}">
                         <span class="star-icon">&#9733;</span>
-
                     </button>
 
                     <h4>Комментарии</h4>
@@ -213,7 +218,7 @@
     const likeButtons = document.querySelectorAll('.like-button');
     likeButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
-            const postId = event.target.dataset.postId;
+            const postId = button.dataset.postId; // Получение значения postId из атрибута кнопки
             likePost(postId);
         });
     });
@@ -234,11 +239,9 @@
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    const likesCountElement = document.querySelector(`.post[data-post-id="${postId}"] .likes-count`);
                     likesCountElement.textContent = `Лайков: ${data.likes_count}`;
                     button.classList.toggle('active');
                 }
             })
-            .catch((error) => console.error(error));
-    }
+            .catch((error) => console.error(error));}
 </script>
