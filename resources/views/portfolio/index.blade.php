@@ -100,7 +100,9 @@
                     <h3>{{ $project->title }}</h3>
                     <p>{{ $project->description }}</p>
                     <img class="post-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+
                 </div>
+
             @endforeach
         </div>
     </div>

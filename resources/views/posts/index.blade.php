@@ -75,12 +75,7 @@
         outline: none;
         transition: border-color 0.15s ease-in-out;
     }
-    .comment-container {
-        background-color: #374151;
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 5px;
-    }
+
     .comment-content {
         color: #ffffff;
         margin-bottom: 5px;
@@ -141,7 +136,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <form action="{{ route('comments.store') }}" method="post" class="comment-form">
+                    <form action="{{ route('comments.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="post_id" value="{{ $post->id }}">
                         <textarea name="content" rows="3" placeholder="Enter your comment"></textarea>

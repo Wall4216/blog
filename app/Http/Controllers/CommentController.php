@@ -11,14 +11,16 @@ class CommentController extends Controller
     {
         $validatedData = $request->validate([
             'post_id' => 'required|exists:posts,id',
-            'user_id' => 'required|exists:users,id',
             'content' => 'required|string',
         ]);
+
+        $validatedData['user_id'] = auth()->user()->id; // Установка user_id
 
         $comment = Comment::create($validatedData);
 
         return redirect()->back()->with('success', 'Comment created');
     }
+
 
     public function edit($id)
     {
