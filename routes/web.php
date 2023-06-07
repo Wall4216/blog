@@ -48,6 +48,7 @@ Route::delete('/portfolio/{id}', [ProjectController::class, 'destroy'])->name('p
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+Route::post('/posts/{id}/like', [PostController::class, 'like'])->name('posts.like');
 
 require __DIR__.'/auth.php';
 

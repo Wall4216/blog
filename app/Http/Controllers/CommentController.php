@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+
 class CommentController extends Controller
 {
     public function store(Request $request)
@@ -12,14 +13,23 @@ class CommentController extends Controller
         $validatedData = $request->validate([
             'post_id' => 'required|exists:posts,id',
             'content' => 'required|string',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $validatedData['user_id'] = auth()->user()->id; // Установка user_id
+        $comment = Comment::create([
+            'post_id' => $validatedData['post_id'],
+            'user_id' => $validatedData['user_id'],
+            'content' => $validatedData['content'],
+        ]);
 
-        $comment = Comment::create($validatedData);
+        $post = Post::findOrFail($validatedData['post_id']);
 
-        return redirect()->back()->with('success', 'Comment created');
+        return redirect()->route('posts.index')->with('success', 'Comment created')->with('post', $post);
     }
+
+
+
+
 
 
     public function edit($id)
@@ -48,5 +58,4 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'Comment deleted');
     }
-
 }

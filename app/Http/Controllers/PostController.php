@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -88,5 +89,26 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Пост успешно удален');
     }
+    public function like(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
 
+        // Проверка, чтобы один пользователь мог поставить только один лайк
+        $like = Like::where('post_id', $post->id)->where('user_id', auth()->user()->id)->first();
+        if ($like) {
+            return response()->json(['success' => false, 'message' => 'Вы уже поставили лайк.']);
+        }
+
+        // Создание нового лайка
+        $like = Like::create([
+            'post_id' => $post->id,
+            'user_id' => auth()->user()->id,
+            'count' => 1,
+        ]);
+
+        // Увеличение счетчика лайков поста
+        $post->increment('likes_count');
+
+        return response()->json(['success' => true, 'likes_count' => $post->likes_count]);
+    }
 }

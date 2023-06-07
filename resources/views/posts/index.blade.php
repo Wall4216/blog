@@ -6,6 +6,8 @@
     <title>Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xyz" crossorigin="anonymous" />
+
 </head>
 <style>
     .post {
@@ -75,7 +77,12 @@
         outline: none;
         transition: border-color 0.15s ease-in-out;
     }
-
+    .comment-container {
+        background-color: #374151;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
     .comment-content {
         color: #ffffff;
         margin-bottom: 5px;
@@ -84,13 +91,22 @@
         color: #8d8d8d;
         font-size: 12px;
     }
+    .comment-user {
+        color: #ffffff;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
     .comment-form {
         margin-top: 10px;
     }
     .comment-form textarea {
         width: 100%;
         resize: vertical;
-        padding: 5px;
+        padding: 10px;
+        border: 1px solid #8d8d8d;
+        border-radius: 5px;
+        background-color: #374151;
+        color: #ffffff;
     }
     .comment-form button {
         background-color: #6366F1;
@@ -102,6 +118,36 @@
     }
     .comment-form button:hover {
         background-color: #4F46E5;
+    }
+    .like-button {
+        background-color: transparent;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .like-button:hover {
+        color: #ffd700; /* Измените цвет на желтый или желаемый */
+    }
+    .like-button.active {
+        color: #ffd700; /* Измените цвет на желтый или желаемый */
+    }
+    .star-icon {
+        font-size: 20px;
+        color: transparent;
+        border: 1px solid #ffffff;
+        transition: transform 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .star-icon:hover {
+        color: #ffd700;
+        border-color: #ffffff;
+        cursor: pointer;
+    }
+
+    .star-icon:active {
+        color: #ffd700;
+        transform: scale(10);
     }
 </style>
 
@@ -123,30 +169,76 @@
         <div class="col-lg-8 offset-lg-2">
             <h1 style="color: #f9fafb">Posts</h1>
             @foreach($posts as $post)
-                <div class="post">
+                <div class="post" data-post-id="{{ $post->id }}">
                     <h3>{{ $post->title }}</h3>
                     <p>{{ $post->description }}</p>
                     <img class="post-image" src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}">
-                    <h4>Comments</h4>
+                    <p>Автор: {{ $post->user ? $post->user->name : 'Администратор' }}</p>
+                    <p class="likes-count">Лайков: {{ $post->likes_count }}</p>
+                    <!-- Звездочка для добавления лайка -->
+                    <button class="like-button {{ $post->likedByUser(auth()->user()->id) ? 'active' : '' }}" data-post-id="{{ $post->id }}">
+                        <span class="star-icon">&#9733;</span>
+
+                    </button>
+
+                    <h4>Комментарии</h4>
                     <div class="comment-container">
                         @foreach($post->comments as $comment)
                             <div class="comment">
+                                <p class="comment-user">{{ $comment->user->email }}</p>
                                 <p class="comment-content">{{ $comment->content }}</p>
                                 <p class="comment-date">{{ $comment->created_at->format('Y-m-d H:i:s') }}</p>
                             </div>
                         @endforeach
+                        <form action="{{ route('comments.store') }}" method="post" class="comment-form">
+                            @csrf
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                            @auth
+                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            @endauth
+                            <textarea name="content" required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
                     </div>
-                    <form action="{{ route('comments.store') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                        <textarea name="content" rows="3" placeholder="Enter your comment"></textarea>
-                        <button type="submit">Submit</button>
-                    </form>
                 </div>
             @endforeach
+            <script src="{{ asset('js/app.js') }}" type="module"></script>
         </div>
     </div>
 </div>
-<script src="{{ asset('js/app.js') }}" type="module"></script>
 </body>
 </html>
+<script>
+    // Обработчик события нажатия на звездочку (лайк)
+    const likeButtons = document.querySelectorAll('.like-button');
+    likeButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const postId = event.target.dataset.postId;
+            likePost(postId);
+        });
+    });
+
+    // Функция для отправки запроса на добавление лайка
+    function likePost(postId) {
+        const button = document.querySelector(`.post[data-post-id="${postId}"] .like-button`);
+        const likesCountElement = document.querySelector(`.post[data-post-id="${postId}"] .likes-count`);
+
+        fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ post_id: postId }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    const likesCountElement = document.querySelector(`.post[data-post-id="${postId}"] .likes-count`);
+                    likesCountElement.textContent = `Лайков: ${data.likes_count}`;
+                    button.classList.toggle('active');
+                }
+            })
+            .catch((error) => console.error(error));
+    }
+</script>
