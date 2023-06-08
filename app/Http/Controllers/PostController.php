@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostCreated;
 use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -36,7 +37,11 @@ class PostController extends Controller
                 $validatedData['image'] = $imagePath;
             }
 
-            Post::create($validatedData);
+            $post = Post::create($validatedData);
+
+            // Вызов события PostCreated
+            event(new PostCreated($post));
+
             return redirect('/posts')->with('success', 'Post created');
         }
 
