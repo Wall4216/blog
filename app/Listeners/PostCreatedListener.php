@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PostCreated;
+use App\Mail\PostCreatedMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
@@ -27,6 +28,6 @@ class PostCreatedListener
 
         // Здесь вы можете добавить логику отправки электронной почты
         // Используя класс Mail, например:
-        Mail::to('recipient@example.com')->send(new PostCreatedMail($post));
+        Mail::to('amirkhanovi04@mail.ru@mail.ru')->send(new PostCreatedMail($post));
     }
 }
