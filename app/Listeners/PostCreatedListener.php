@@ -23,11 +23,10 @@ class PostCreatedListener
      */
     public function handle(PostCreated $event)
     {
-        // Получаем созданный пост из события
         $post = $event->post;
-
-        // Здесь вы можете добавить логику отправки электронной почты
-        // Используя класс Mail, например:
-        Mail::to('amirkhanovi04@mail.ru@mail.ru')->send(new PostCreatedMail($post));
-    }
+        try {
+            Mail::to('amirkhanovi04@mail.ru')->send(new PostCreatedMail($post));
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        } }
 }
